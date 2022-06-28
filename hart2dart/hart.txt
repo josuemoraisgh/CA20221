@@ -1,0 +1,4 @@
+5.3	Time
+In the Protocol, time is contained within an unsigned 32-bit binary integer with the with the least significant bit of the time value representing 1/32 of a millisecond (i.e., 0.03125 milliseconds).
+ 
+When time data types are used to represent time of day they indicate the number of 1/32 of milliseconds since midnight. Time can span in excess of 37 hours. When a longer span is required the field device should use time in conjunction with a Date (see Section 5.2).
