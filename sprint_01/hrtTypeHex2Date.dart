@@ -14,14 +14,15 @@ initialCheck(String strHex) {
   strHex = strHex.replaceAll(RegExp(r'[^\w\s]+'), '');
   strHex = strHex.replaceAll(RegExp(' '), '');
   String newStr = checkLength(strHex);
-  print("input string: $newStr");
+  //print("input string: $newStr");
 
   if (checkRange(strHex)) {
     if (checkNumber(strHex)) {
-      print('A data referente a ' +
+      /*print('A data referente a ' +
           strHex.substring(0, 6) +
           ' é: ' +
-          hrtTypeHex2Date(strHex.substring(0, 6)));
+          hrtTypeHex2Date(strHex.substring(0, 6)));*/
+      print(hrtTypeHex2Date(strHex.substring(0, 6)));
     }
   }
 }
@@ -72,16 +73,22 @@ bool checkNumber(String strHex) {
   for (int i = 0; i <= 5; i += 2) {
     final twoChar = strHex.substring(i, i + 2); //takes two characters at a time
     final aux = int.parse(twoChar, radix: 16);
-    if (i == 0 && aux > 31) {
-      print('Invalid day: ' +
+    if (i == 0 && (aux <= 0 || aux > 31)) {
+      print('Invalid day! ' +
           (strHex.substring(i, i + 2)) +
-          ' value is greater than 31');
+          ' value is out of range (01 - 31)');
       return false;
     }
-    if (i == 2 && aux > 12) {
+    if (i == 2 && (aux <= 0 || aux > 12)) {
       print('Invalid month: ' +
           strHex.substring(i, i + 2) +
-          ' value is greater than 12');
+          ' value is out of range (01 - 12)');
+      return false;
+    }
+    if (i == 4 && (aux < 0 || aux > 255)) {
+      print('Invalid year: ' +
+          strHex.substring(i, i + 2) +
+          ' value is out of range (00 - 255)');
       return false;
     }
   }
