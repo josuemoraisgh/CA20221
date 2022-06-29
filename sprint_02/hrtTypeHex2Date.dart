@@ -4,7 +4,7 @@
 
 import 'dart:core';
 
-void main(dynamic valorhex) {
+void main(List<String> valorhex) {
   initialCheck(valorhex.toString());
 }
 
@@ -13,21 +13,24 @@ initialCheck(String strHex) {
   //removing all non-hex characters and spaces
   strHex = strHex.replaceAll(RegExp(r'[^\w\s]+'), '');
   strHex = strHex.replaceAll(RegExp(' '), '');
-  String newStr = checkLength(strHex);
-  print("input string: $newStr");
+  // ignore: unused_local_variable
+  String newStr =
+      checkLength(strHex); //checking if the string is correct length
+  //print("input string: $newStr");
 
   if (checkRange(strHex)) {
     if (checkNumber(strHex)) {
-      print('A data referente a ' +
-          strHex.substring(0, 6) +
-          ' é: ' +
-          hrtTypeHex2Date(strHex.substring(0, 6)));
+      print(hrtTypeHex2Date(strHex.substring(0, 6)));
+    } else {
+      throw ArgumentError("Function checkNumber() reported invalid string");
     }
+  } else {
+    throw ArgumentError("Function checkRange() reported invalid range");
   }
 }
 
 String hrtTypeHex2Date(String strHex) {
-  var auxVet = [];
+  List<String> auxVet = [];
 
   for (int i = 0; i <= strHex.length - 2; i += 2) {
     final hex = strHex.substring(i, i + 2);
@@ -36,11 +39,12 @@ String hrtTypeHex2Date(String strHex) {
       String aux = '0' + toInt.toString();
       auxVet.add(aux);
     } else {
-      auxVet.add(toInt);
+      auxVet.add(toInt.toString());
     }
   }
 
-  auxVet[2] = auxVet[2] + 1900;
+  auxVet[2] = (int.parse(auxVet[2]) + 1900).toString();
+
   String data = auxVet.join('/');
   return data;
 }
@@ -48,7 +52,10 @@ String hrtTypeHex2Date(String strHex) {
 String checkLength(String strHex) {
   String myHex = "";
   if (strHex.length < 6 || strHex.isEmpty) {
-    throw Exception('Invalid Length');
+    throw ArgumentError('Function checkLength() reported invalid length');
+  }
+  if (strHex.length > 6) {
+    throw ArgumentError('Function checkLength() reported invalid length');
   }
 
   if (strHex.length > 6) {
@@ -72,16 +79,24 @@ bool checkNumber(String strHex) {
   for (int i = 0; i <= 5; i += 2) {
     final twoChar = strHex.substring(i, i + 2); //takes two characters at a time
     final aux = int.parse(twoChar, radix: 16);
-    if (i == 0 && aux > 31) {
-      print('Invalid day: ' +
+    if (i == 0 && (aux <= 0 || aux > 31)) {
+      print('Invalid day! ' +
           (strHex.substring(i, i + 2)) +
-          ' value is greater than 31');
+          ' value is out of range (01 - 31)');
       return false;
     }
-    if (i == 2 && aux > 12) {
+
+    if (i == 2 && (aux <= 0 || aux > 12)) {
       print('Invalid month: ' +
           strHex.substring(i, i + 2) +
-          ' value is greater than 12');
+          ' value is out of range (01 - 12)');
+      return false;
+    }
+
+    if (i == 4 && (aux < 0 || aux > 255)) {
+      print('Invalid year: ' +
+          strHex.substring(i, i + 2) +
+          ' value is out of range (00 - 255)');
       return false;
     }
   }
