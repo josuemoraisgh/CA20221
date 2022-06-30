@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dec_bin.dart';
 
-//void main() => print(hrtTypeSReal2Hex(-13.39));
+void main() => print(hrtTypeSReal2Hex(3.14));
 
 String hrtTypeSReal2Hex(double hartRealValue){
   int bitsArray = 0;
