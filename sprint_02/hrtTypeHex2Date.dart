@@ -4,8 +4,9 @@
 
 import 'dart:core';
 
-void main(List<String> valorhex) {
-  initialCheck(valorhex.toString());
+dynamic hrtTypeHex2Date(String valorhex) {
+  String hex2date = initialCheck(valorhex.toString());
+  return hex2date;
 }
 
 initialCheck(String strHex) {
@@ -13,14 +14,13 @@ initialCheck(String strHex) {
   //removing all non-hex characters and spaces
   strHex = strHex.replaceAll(RegExp(r'[^\w\s]+'), '');
   strHex = strHex.replaceAll(RegExp(' '), '');
-  // ignore: unused_local_variable
-  String newStr =
-      checkLength(strHex); //checking if the string is correct length
-  //print("input string: $newStr");
+  strHex = strHex.replaceAll(RegExp(r'([g-zG-Z!@#$%^&*ç~´`])'), '');
+  print(strHex);
+  checkLength(strHex); //checking if the string is correct length
 
   if (checkRange(strHex)) {
     if (checkNumber(strHex)) {
-      print(hrtTypeHex2Date(strHex.substring(0, 6)));
+      return (doHrtTypeHex2Date(strHex.substring(0, 6)));
     } else {
       throw ArgumentError("Function checkNumber() reported invalid string");
     }
@@ -29,7 +29,7 @@ initialCheck(String strHex) {
   }
 }
 
-String hrtTypeHex2Date(String strHex) {
+String doHrtTypeHex2Date(String strHex) {
   List<String> auxVet = [];
 
   for (int i = 0; i <= strHex.length - 2; i += 2) {
@@ -49,19 +49,13 @@ String hrtTypeHex2Date(String strHex) {
   return data;
 }
 
-String checkLength(String strHex) {
-  String myHex = "";
+void checkLength(String strHex) {
   if (strHex.length < 6 || strHex.isEmpty) {
     throw ArgumentError('Function checkLength() reported invalid length');
   }
   if (strHex.length > 6) {
     throw ArgumentError('Function checkLength() reported invalid length');
   }
-
-  if (strHex.length > 6) {
-    myHex = strHex.substring(0, 6);
-  }
-  return myHex;
 }
 
 bool checkRange(String strHex) {
