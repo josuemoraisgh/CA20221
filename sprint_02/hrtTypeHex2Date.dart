@@ -2,6 +2,7 @@
 //Author: Eliel Prado
 //The date is represented as: DDMMYY-1900
 
+import 'dart:async';
 import 'dart:core';
 
 dynamic hrtTypeHex2Date(String valorhex) {
@@ -15,7 +16,7 @@ initialCheck(String strHex) {
   strHex = strHex.replaceAll(RegExp(r'[^\w\s]+'), '');
   strHex = strHex.replaceAll(RegExp(' '), '');
   strHex = strHex.replaceAll(RegExp(r'([g-zG-Z!@#$%^&*ç~´`])'), '');
-  print(strHex);
+  //print(strHex);
   checkLength(strHex); //checking if the string is correct length
 
   if (checkRange(strHex)) {
@@ -44,9 +45,82 @@ String doHrtTypeHex2Date(String strHex) {
   }
 
   auxVet[2] = (int.parse(auxVet[2]) + 1900).toString();
+  if (checkDate(auxVet[0], auxVet[1], auxVet[2])) {
+    String data = auxVet.join('/');
+    return data;
+  } else {
+    throw ArgumentError("Function checkDate() reported invalid date");
+  }
+}
 
-  String data = auxVet.join('/');
-  return data;
+bool checkDate(String day, String mon, String year) {
+  //print(day);
+  //print(mon);
+  //print(year);
+  //convert day into int
+  int d = int.parse(day);
+  int m = int.parse(mon);
+  int y = int.parse(year);
+
+  if (((y % 4 == 0) && (y % 100 != 0)) || (y % 400 == 0)) {
+    //print("$y is a leap year");
+    if (m == 2) {
+      if (d <= 29) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      if (m == 1 ||
+          m == 3 ||
+          m == 5 ||
+          m == 7 ||
+          m == 8 ||
+          m == 10 ||
+          m == 12) {
+        if (d <= 31) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        if (d <= 30) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+  } else {
+    //print("$y is not a leap year");
+    if (m == 2) {
+      if (d <= 28) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      if (m == 1 ||
+          m == 3 ||
+          m == 5 ||
+          m == 7 ||
+          m == 8 ||
+          m == 10 ||
+          m == 12) {
+        if (d <= 31) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        if (d <= 30) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+  }
 }
 
 void checkLength(String strHex) {
