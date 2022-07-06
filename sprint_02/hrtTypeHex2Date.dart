@@ -2,7 +2,7 @@
 //Author: Eliel Prado
 //The date is represented as: DDMMYY-1900
 
-import 'dart:async';
+//import 'dart:async';
 import 'dart:core';
 
 dynamic hrtTypeHex2Date(String valorhex) {
