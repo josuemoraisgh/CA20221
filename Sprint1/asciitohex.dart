@@ -1,5 +1,14 @@
-ascii_to_hex(form)
+asciiToHex(String form)
 {
+  if (form == '')
+    throw ArgumentError("Função asciiToHex recebeu string vazia");
+  if (form.length > 3)
+    throw ArgumentError(
+        "Função asciiToHex recebeu asciiToHex com mais de dois termos");
+  if(form.split('').where((element) => int.parse(element, radix: 95) > 1).isNotEmpty)
+    throw ArgumentError(
+        "Função hrtTypeHex2UInt recebeu hexString com caracteres que não são hex");
+
   var symbols = "!\"#\$%&'()*+,-./0123456789:;<=>?@";
   var loAZ = "abcdefghijklmnopqrstuvwxyz";
   symbols += loAZ.toUpperCase();
@@ -24,5 +33,5 @@ ascii_to_hex(form)
 }
 
 void main(){
-  print(ascii_to_hex('Gustavo'));
+  print(asciiToHex('Gustavo'));
 }
